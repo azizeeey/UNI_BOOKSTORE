@@ -11,8 +11,8 @@
         <h1>📚 UNI Bookstore</h1>
         <nav>
             <a href="index.php">Home</a> |
-            <a href="admin.php">Kelola Data</a> |
-            <a href="pengadaan.php">Pengadaan Buku</a>
+            <a href="admin.php">Admin</a> |
+            <a href="pengadaan.php">Pengadaan</a>
         </nav>
     </header>
     <hr>
