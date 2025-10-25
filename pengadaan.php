@@ -4,7 +4,7 @@
 <h2>Laporan Pengadaan Buku</h2>
 <p>Berikut daftar buku dengan stok paling sedikit (<= 20):</p>
 
-<table border="1" cellpadding="8">
+<table>
     <tr>
         <th>Nama Buku</th>
         <th>Penerbit</th>
@@ -21,9 +21,9 @@
     while ($row = $result->fetch_assoc()) :
     ?>
     <tr>
-        <td><?= $row['nama_buku']; ?></td>
-        <td><?= $row['nama_penerbit']; ?></td>
-        <td><?= $row['stok']; ?></td>
+        <td><?= htmlspecialchars($row['nama_buku']); ?></td>
+        <td><?= htmlspecialchars($row['nama_penerbit']); ?></td>
+        <td><?= htmlspecialchars($row['stok']); ?></td>
     </tr>
     <?php endwhile; ?>
 </table>
