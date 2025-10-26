@@ -13,12 +13,15 @@
     </tr>
 
     <?php
-    $query = "SELECT buku.nama_buku, penerbit.nama_penerbit AS nama_penerbit, buku.stok 
-              FROM buku 
-              JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit
-              WHERE buku.stok <= 20 
-              ORDER BY buku.stok ASC";
-    $result = $koneksi->query($query);
+    $stok_limit = 20;
+    $stmt = $koneksi->prepare("SELECT buku.nama_buku, penerbit.nama_penerbit AS nama_penerbit, buku.stok 
+                           FROM buku 
+                           JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit
+                           WHERE buku.stok <= ?
+                           ORDER BY buku.stok ASC");
+    $stmt->bind_param("i", $stok_limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) :
     ?>
     <tr>

@@ -5,20 +5,14 @@
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
-    $id = $koneksi->real_escape_string($_POST['id_buku']);
-    $kategori = $koneksi->real_escape_string($_POST['kategori']);
-    $nama = $koneksi->real_escape_string($_POST['nama_buku']);
-    $harga = (int)$_POST['harga'];
-    $stok = (int)$_POST['stok'];
-    $idp = $koneksi->real_escape_string($_POST['id_penerbit']);
+    $stmt = $koneksi->prepare("INSERT INTO buku (id_buku, kategori, nama_buku, harga, stok, id_penerbit) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiis", $_POST['id_buku'], $_POST['kategori'], $_POST['nama_buku'], $_POST['harga'], $_POST['stok'], $_POST['id_penerbit']);
 
-    $sql = "INSERT INTO buku (id_buku,kategori,nama_buku,harga,stok,id_penerbit) VALUES (
-        '$id', '$kategori', '$nama', $harga, $stok, '$idp')";
-    if ($koneksi->query($sql)) {
+    if ($stmt->execute()) {
         echo "<meta http-equiv='refresh' content='0; url=admin.php?status=success_add'>";
         exit;
     } else {
-        echo '<div class="notification danger">Gagal menyimpan: ' . htmlspecialchars($koneksi->error) . '</div>';
+        echo '<div class="notification danger">Gagal menyimpan: ' . htmlspecialchars($stmt->error) . '</div>';
     }
 }
 ?>
@@ -44,16 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
         <select name="id_penerbit" class="form-select" required>
             <option value="">--Pilih Penerbit--</option>
             <?php
-            $penerbit = $koneksi->query("SELECT * FROM penerbit");
+            $penerbit_stmt = $koneksi->prepare("SELECT * FROM penerbit");
+            $penerbit_stmt->execute();
+            $penerbit = $penerbit_stmt->get_result();
             while ($p = $penerbit->fetch_assoc()) {
                 echo "<option value='".htmlspecialchars($p['id_penerbit'])."'>".htmlspecialchars($p['nama_penerbit'])."</option>";
             }
             ?>
         </select>
-    </div>
-    <div style="display:flex;gap:.5rem;">
-        <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
-        <a href="admin.php" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 </div>

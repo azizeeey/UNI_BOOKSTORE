@@ -6,8 +6,12 @@ if (!isset($_GET['edit'])) {
     echo "<meta http-equiv='refresh' content='0; url=admin.php'>";
     exit;
 }
-$idEdit = $koneksi->real_escape_string($_GET['edit']);
-$res = $koneksi->query("SELECT * FROM buku WHERE id_buku='$idEdit'");
+
+$stmt = $koneksi->prepare("SELECT * FROM buku WHERE id_buku = ?");
+$stmt->bind_param("s", $_GET['edit']);
+$stmt->execute();
+$res = $stmt->get_result();
+
 if (!$res || $res->num_rows === 0) {
     echo "<meta http-equiv='refresh' content='0; url=admin.php'>";
     exit;
@@ -15,19 +19,14 @@ if (!$res || $res->num_rows === 0) {
 $r = $res->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
-    $id = $koneksi->real_escape_string($_POST['id_buku']);
-    $kategori = $koneksi->real_escape_string($_POST['kategori']);
-    $nama = $koneksi->real_escape_string($_POST['nama_buku']);
-    $harga = (int)$_POST['harga'];
-    $stok = (int)$_POST['stok'];
-    $idp = $koneksi->real_escape_string($_POST['id_penerbit']);
+    $stmt = $koneksi->prepare("UPDATE buku SET kategori = ?, nama_buku = ?, harga = ?, stok = ?, id_penerbit = ? WHERE id_buku = ?");
+    $stmt->bind_param("ssiiss", $_POST['kategori'], $_POST['nama_buku'], $_POST['harga'], $_POST['stok'], $_POST['id_penerbit'], $_POST['id_buku']);
 
-    $sql = "UPDATE buku SET kategori='$kategori', nama_buku='$nama', harga=$harga, stok=$stok, id_penerbit='$idp' WHERE id_buku='$id'";
-    if ($koneksi->query($sql)) {
+    if ($stmt->execute()) {
         echo "<meta http-equiv='refresh' content='0; url=admin.php?status=success_update'>";
         exit;
     } else {
-        echo '<div class="notification danger">Gagal update: ' . htmlspecialchars($koneksi->error) . '</div>';
+        echo '<div class="notification danger">Gagal update: ' . htmlspecialchars($stmt->error) . '</div>';
     }
 }
 ?>
@@ -52,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
     <div class="mb-3">
         <select name="id_penerbit" class="form-select" required>
             <?php
-            $penerbit = $koneksi->query("SELECT * FROM penerbit");
+            $penerbit_stmt = $koneksi->prepare("SELECT * FROM penerbit");
+            $penerbit_stmt->execute();
+            $penerbit = $penerbit_stmt->get_result();
             while ($p = $penerbit->fetch_assoc()) {
                 $sel = $p['id_penerbit'] == $r['id_penerbit'] ? 'selected' : '';
                 echo "<option value='".htmlspecialchars($p['id_penerbit'])."' $sel>".htmlspecialchars($p['nama_penerbit'])."</option>";

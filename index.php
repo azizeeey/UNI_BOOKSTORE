@@ -11,13 +11,15 @@
 </form>
 
 <?php
-$cari_raw = isset($_GET['cari']) ? $_GET['cari'] : '';
-$cari = $koneksi->real_escape_string($cari_raw);
-$query = "SELECT buku.*, penerbit.nama_penerbit AS nama_penerbit 
-          FROM buku 
-          JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit 
-          WHERE buku.nama_buku LIKE '%$cari%'";
-$result = $koneksi->query($query);
+$cari = isset($_GET['cari']) ? $_GET['cari'] : '';
+$searchTerm = "%" . $cari . "%";
+$stmt = $koneksi->prepare("SELECT buku.*, penerbit.nama_penerbit AS nama_penerbit 
+                           FROM buku 
+                           JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit 
+                           WHERE buku.nama_buku LIKE ?");
+$stmt->bind_param("s", $searchTerm);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <div class="card">

@@ -87,8 +87,9 @@ if (isset($_GET['status'])) {
         <th>Aksi</th>
     </tr>
     <?php
-    $data = $koneksi->query("SELECT buku.*, penerbit.nama_penerbit AS nama_penerbit FROM buku 
-                             JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit");
+    $stmt = $koneksi->prepare("SELECT buku.*, penerbit.nama_penerbit AS nama_penerbit FROM buku JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit");
+    $stmt->execute();
+    $data = $stmt->get_result();
     while ($row = $data->fetch_assoc()) :
     ?>
     <tr>
