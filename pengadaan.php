@@ -4,7 +4,8 @@
 <h2>Laporan Pengadaan Buku</h2>
 <p>Berikut daftar buku dengan stok paling sedikit (<= 20):</p>
 
-<table>
+<div class="card">
+<table class="table table-striped table-hover">
     <tr>
         <th>Nama Buku</th>
         <th>Penerbit</th>

@@ -54,7 +54,7 @@ if (isset($_GET['status'])) {
 
 <!-- tombol untuk menuju form tambah (redirect ke halaman form) -->
 <p>
-    <a href="admin_add.php" id="addBtn" class="btn">Tambah Buku</a>
+    <a href="admin_add.php" id="addBtn" class="btn btn-primary">Tambah Buku</a>
 </p>
 
 <!-- Modal konfirmasi hapus: ubah menjadi form POST -->
@@ -63,19 +63,20 @@ if (isset($_GET['status'])) {
         <h3 style="margin-top:0;color:var(--danger)">Konfirmasi Hapus</h3>
         <p>Apakah Anda yakin ingin menghapus buku ini? Aksi ini tidak dapat dikembalikan.</p>
         <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;">
-            <a href="#" id="confirmCancel" class="btn secondary">Batal</a>
+            <a href="#" id="confirmCancel" class="btn btn-secondary">Batal</a>
 
             <!-- form POST untuk konfirmasi hapus (pastikan action jelas) -->
             <form method="POST" id="deleteForm" action="admin.php" style="margin:0;">
                 <input type="hidden" name="hapus_confirm" id="hapus_confirm" value="">
-                <button type="submit" class="btn" style="background:var(--danger);">Hapus</button>
+                <button type="submit" class="btn btn-danger">Hapus</button>
             </form>
         </div>
     </div>
 </div>
 
 <!-- Tabel Buku -->
-<table>
+<div class="card">
+<table class="table table-striped table-hover">
     <tr>
         <th>ID Buku</th>
         <th>Kategori</th>
@@ -98,15 +99,16 @@ if (isset($_GET['status'])) {
         <td><?= htmlspecialchars($row['stok']); ?></td>
         <td><?= htmlspecialchars($row['nama_penerbit']); ?></td>
         <td>
-            <a href="admin_edit.php?edit=<?= urlencode($row['id_buku']); ?>" title="Edit" class="icon-btn" aria-label="Edit">
+            <a href="admin_edit.php?edit=<?= urlencode($row['id_buku']); ?>" title="Edit" class="btn btn-sm btn-outline-primary" aria-label="Edit">
                 <i class="fas fa-edit"></i>
             </a>
-            <a href="#" data-id="<?= htmlspecialchars($row['id_buku']); ?>" title="Hapus" class="icon-btn confirm-delete" aria-label="Hapus">
-                <i class="fas fa-trash-alt" style="color:var(--danger)"></i>
+            <a href="#" data-id="<?= htmlspecialchars($row['id_buku']); ?>" title="Hapus" class="btn btn-sm btn-outline-danger confirm-delete" aria-label="Hapus">
+                <i class="fas fa-trash-alt"></i>
             </a>
         </td>
     </tr>
     <?php endwhile; ?>
 </table>
+</div>
 
 <?php include 'includes/footer.php'; ?>

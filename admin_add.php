@@ -25,23 +25,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
 
 <div class="card" style="max-width:720px;">
 <form method="POST" action="">
-    <input type="text" name="id_buku" placeholder="ID Buku" required>
-    <input type="text" name="kategori" placeholder="Kategori" required>
-    <input type="text" name="nama_buku" placeholder="Nama Buku" required>
-    <input type="number" name="harga" placeholder="Harga" required>
-    <input type="number" name="stok" placeholder="Stok" required>
-    <select name="id_penerbit" required>
-        <option value="">--Pilih Penerbit--</option>
-        <?php
-        $penerbit = $koneksi->query("SELECT * FROM penerbit");
-        while ($p = $penerbit->fetch_assoc()) {
-            echo "<option value='".htmlspecialchars($p['id_penerbit'])."'>".htmlspecialchars($p['nama_penerbit'])."</option>";
-        }
-        ?>
-    </select>
+    <div class="mb-3">
+        <input type="text" name="id_buku" class="form-control" placeholder="ID Buku" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" name="kategori" class="form-control" placeholder="Kategori" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" name="nama_buku" class="form-control" placeholder="Nama Buku" required>
+    </div>
+    <div class="mb-3">
+        <input type="number" name="harga" class="form-control" placeholder="Harga" required>
+    </div>
+    <div class="mb-3">
+        <input type="number" name="stok" class="form-control" placeholder="Stok" required>
+    </div>
+    <div class="mb-3">
+        <select name="id_penerbit" class="form-select" required>
+            <option value="">--Pilih Penerbit--</option>
+            <?php
+            $penerbit = $koneksi->query("SELECT * FROM penerbit");
+            while ($p = $penerbit->fetch_assoc()) {
+                echo "<option value='".htmlspecialchars($p['id_penerbit'])."'>".htmlspecialchars($p['nama_penerbit'])."</option>";
+            }
+            ?>
+        </select>
+    </div>
     <div style="display:flex;gap:.5rem;">
-        <button type="submit" name="simpan" class="btn">Simpan</button>
-        <a href="admin.php" class="btn secondary">Batal</a>
+        <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+        <a href="admin.php" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 </div>

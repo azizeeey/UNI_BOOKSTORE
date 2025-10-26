@@ -37,22 +37,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
 <div class="card" style="max-width:720px;">
 <form method="POST" action="">
     <input type="hidden" name="id_buku" value="<?= htmlspecialchars($r['id_buku']); ?>">
-    <input type="text" name="kategori" value="<?= htmlspecialchars($r['kategori']); ?>" required>
-    <input type="text" name="nama_buku" value="<?= htmlspecialchars($r['nama_buku']); ?>" required>
-    <input type="number" name="harga" value="<?= htmlspecialchars($r['harga']); ?>" required>
-    <input type="number" name="stok" value="<?= htmlspecialchars($r['stok']); ?>" required>
-    <select name="id_penerbit" required>
-        <?php
-        $penerbit = $koneksi->query("SELECT * FROM penerbit");
-        while ($p = $penerbit->fetch_assoc()) {
-            $sel = $p['id_penerbit'] == $r['id_penerbit'] ? 'selected' : '';
-            echo "<option value='".htmlspecialchars($p['id_penerbit'])."' $sel>".htmlspecialchars($p['nama_penerbit'])."</option>";
-        }
-        ?>
-    </select>
+    <div class="mb-3">
+        <input type="text" name="kategori" class="form-control" value="<?= htmlspecialchars($r['kategori']); ?>" required>
+    </div>
+    <div class="mb-3">
+        <input type="text" name="nama_buku" class="form-control" value="<?= htmlspecialchars($r['nama_buku']); ?>" required>
+    </div>
+    <div class="mb-3">
+        <input type="number" name="harga" class="form-control" value="<?= htmlspecialchars($r['harga']); ?>" required>
+    </div>
+    <div class="mb-3">
+        <input type="number" name="stok" class="form-control" value="<?= htmlspecialchars($r['stok']); ?>" required>
+    </div>
+    <div class="mb-3">
+        <select name="id_penerbit" class="form-select" required>
+            <?php
+            $penerbit = $koneksi->query("SELECT * FROM penerbit");
+            while ($p = $penerbit->fetch_assoc()) {
+                $sel = $p['id_penerbit'] == $r['id_penerbit'] ? 'selected' : '';
+                echo "<option value='".htmlspecialchars($p['id_penerbit'])."' $sel>".htmlspecialchars($p['nama_penerbit'])."</option>";
+            }
+            ?>
+        </select>
+    </div>
     <div style="display:flex;gap:.5rem;">
-        <button type="submit" name="simpan" class="btn">Simpan</button>
-        <a href="admin.php" class="btn secondary">Batal</a>
+        <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+        <a href="admin.php" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 </div>

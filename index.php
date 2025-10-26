@@ -3,9 +3,11 @@
 
 <h2>Daftar Buku</h2>
 
-<form method="GET" action="">
-    <input type="text" name="cari" placeholder="Cari nama buku..." value="<?= isset($_GET['cari']) ? htmlspecialchars($_GET['cari']) : '' ?>">
-    <button type="submit">Cari</button>
+<form method="GET" action="" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="cari" class="form-control" placeholder="Cari nama buku..." value="<?= isset($_GET['cari']) ? htmlspecialchars($_GET['cari']) : '' ?>">
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </div>
 </form>
 
 <?php
@@ -18,7 +20,8 @@ $query = "SELECT buku.*, penerbit.nama_penerbit AS nama_penerbit
 $result = $koneksi->query($query);
 ?>
 
-<table>
+<div class="card">
+<table class="table table-striped table-hover">
     <tr>
         <th>ID Buku</th>
         <th>Kategori</th>
@@ -39,5 +42,6 @@ $result = $koneksi->query($query);
     </tr>
     <?php endwhile; ?>
 </table>
+</div>
 
 <?php include 'includes/footer.php'; ?>
